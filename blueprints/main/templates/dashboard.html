@@ -1,0 +1,57 @@
+{% extends "partials/base.html" %}
+{% set active_page = "dashboard" %}
+
+{% block content %}
+
+<div class="container-fluid p-0 h-100">
+    <div class="row h-100 w-100 m-0 p-0">
+        <div class="col-2 h-100 p-0 bg-d">
+            <div class="h-100 d-flex align-content-center flex-column p-2">
+                <ul class="nav nav-pills flex-column mb-auto">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" aria-current="page">
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link text-dark">
+                            Add Meal
+                        </a>
+                    </li>
+                </ul>
+                <hr>
+                <a href="{{ url_for('main.logout_user') }}" class="text-center text-dark">Logout</a>
+            </div>
+        </div>
+        <div class="col-10 bg-light d-flex align d-flex flex-column p-0">
+            <div class="cards d-flex flex-row m-4">
+                <div class="card" style="width: 15rem;">
+                    <div class="card-body">
+                        <h2 class="card-title">Total</h2>
+                        <p class="card-subtitle text-muted">#</p>
+                    </div>
+                </div>
+
+                <div class="card mx-4" style="width: 15rem;">
+                    <div class="card-body">
+                        <h2 class="card-title">Today</h2>
+                        <p class="card-subtitle text-muted">#</p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row border bg-white g-2 m-4">
+                <div class="col-12 col-sm-4">
+                    <p>A</p>
+                </div>
+                <div class="col-12 col-sm-4">
+                    <p>B</p>
+                </div>
+                <div class="col-12 col-sm-4">
+                    <p>C</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

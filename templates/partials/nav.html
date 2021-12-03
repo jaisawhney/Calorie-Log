@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-light fixed-top">
+<nav class="navbar navbar-expand-md navbar-light">
     <div class="container">
         <p class="navbar-brand p-0 m-0">TBD</p>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -8,12 +8,13 @@
         <div class="collapse navbar-collapse" id="navbar-links">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link {{ 'active' if active_page == 'index' else '' }}" href="/">Home</a>
+                    <a class="nav-link {{ 'active' if active_page == 'index' else '' }}" href="{{ url_for('main.index') }}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ 'active' if active_page == 'dashboard' else '' }}" href="/dashboard">Dashboard</a>
+                    <a class="nav-link {{ 'active' if active_page == 'dashboard' else '' }}" href="{{ url_for('main.show_dashboard') }}">Dashboard</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
+
