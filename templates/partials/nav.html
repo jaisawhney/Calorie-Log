@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-md navbar-light">
-    <div class="container">
+    <div class="container-fluid px-4">
         <p class="navbar-brand p-0 m-0">TBD</p>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbar-links">
@@ -11,7 +11,7 @@
                     <a class="nav-link {{ 'active' if active_page == 'index' else '' }}" href="{{ url_for('main.index') }}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ 'active' if active_page == 'dashboard' else '' }}" href="{{ url_for('main.show_dashboard') }}">Dashboard</a>
+                    <a class="nav-link {{ 'active' if active_page == 'dashboard' else '' }}" href="{{ url_for('main.dashboard') }}">Dashboard</a>
                 </li>
             </ul>
         </div>

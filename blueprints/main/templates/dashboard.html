@@ -1,57 +1,132 @@
 {% extends "partials/base.html" %}
 {% set active_page = "dashboard" %}
 
+{% block head %}
+<style>
+    .btn-custom-edit {
+        visibility: hidden;
+        position: absolute;
+
+        border: none;
+        color: black;
+        background: none;
+
+        top: 15px;
+        right: 10px;
+    }
+
+    .card-body:hover .btn-custom-edit {
+        visibility: visible;
+    }
+</style>
+{% endblock %}
+
+
 {% block content %}
 
 <div class="container-fluid p-0 h-100">
     <div class="row h-100 w-100 m-0 p-0">
-        <div class="col-2 h-100 p-0 bg-d">
+        <div class="col-2 h-100 p-0">
             <div class="h-100 d-flex align-content-center flex-column p-2">
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">
-                        <a href="#" class="nav-link active" aria-current="page">
-                            Dashboard
+                        <a href="#" class="nav-link active">
+                            <i class="text-center bi bi-house d-block d-md-none"></i>
+                            <span class="d-md-block d-none">Overview</span>
                         </a>
                     </li>
                     <li>
                         <a href="#" class="nav-link text-dark">
-                            Add Meal
-                        </a>
+                            <i class="text-center bi bi-plus-circle d-block d-md-none"></i>
+                            <span class="d-md-block d-none">Goals</span></a>
                     </li>
                 </ul>
                 <hr>
-                <a href="{{ url_for('main.logout_user') }}" class="text-center text-dark">Logout</a>
+                <a href="{{ url_for('main.logout_user') }}" class="text-center text-dark text-decoration-none">
+                    <i class="d-inline-block bi bi-box-arrow-right"></i>
+                    <span class="d-md-inline-block d-none">Logout</span>
+                </a>
             </div>
         </div>
         <div class="col-10 bg-light d-flex align d-flex flex-column p-0">
-            <div class="cards d-flex flex-row m-4">
+            <div class="mx-4 mt-4">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% for category, message in messages %}
+
+                <div class="alert alert-{{ category }}" role="alert">
+                    {{ message }}
+                </div>
+
+                {% endfor %}
+                {% endwith %}
+            </div>
+            <div class="d-flex flex-row mx-4">
                 <div class="card" style="width: 15rem;">
                     <div class="card-body">
                         <h2 class="card-title">Total</h2>
-                        <p class="card-subtitle text-muted">#</p>
+                        <p class="card-subtitle text-muted">{{stats.total.amount or 0}}</p>
                     </div>
                 </div>
 
                 <div class="card mx-4" style="width: 15rem;">
                     <div class="card-body">
                         <h2 class="card-title">Today</h2>
-                        <p class="card-subtitle text-muted">#</p>
+                        <p class="card-subtitle text-muted">{{stats.daily.amount or 0}}</p>
                     </div>
                 </div>
 
             </div>
-            <div class="row border bg-white g-2 m-4">
+
+            <div class="m-4">
+                <form action="{{ url_for('items.create') }}" method="POST">
+                    <div class="input-group">
+                        <input type="text" name="item_name" class="form-control d-block" placeholder="Name"
+                               required>
+                        <input type="number" name="item_calories" class="form-control" placeholder="Calories" min="0"
+                               required>
+
+                        <button class="btn btn-success" type="submit">Add</button>
+                    </div>
+                </form>
+            </div>
+            <div class="row border bg-white mx-4">
+                {% for item in items %}
                 <div class="col-12 col-sm-4">
-                    <p>A</p>
+                    <div class="card m-2">
+                        <div class="card-body">
+                            <h3 class="card-title" style="font-size: 20px">{{item.name}}</h3>
+                            <p class="card-subtitle">{{item.calories}}</p>
+
+                            <button class="btn-custom-edit" data-id="{{item._id}}">
+                                <i class="bi bi-trash"></i></button>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-12 col-sm-4">
-                    <p>B</p>
+
+                {% else %}
+                <div class="col-12 py-3">
+                    <p class="text-muted my-auto">No Items yet</p>
                 </div>
-                <div class="col-12 col-sm-4">
-                    <p>C</p>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    const deleteButtons = document.querySelectorAll(".btn-custom-edit");
+    deleteButtons.forEach(button => button.addEventListener('click', handleClick));
+
+    function handleClick(e) {
+        const target = e.currentTarget;
+        const item_id = target.dataset.id;
+        if (!item_id) return;
+
+        fetch(`/items/${item_id}`, {
+            method: "DELETE"
+        }).then(() => {
+            window.location.reload();
+        });
+    }
+</script>
 {% endblock %}
