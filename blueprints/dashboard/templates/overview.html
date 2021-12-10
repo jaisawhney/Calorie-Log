@@ -40,7 +40,7 @@
             <i class="align-middle d-md-inline-block d-none bi bi-speedometer me-3" style="font-size: 2em"></i>
             <div class="align-middle d-inline-block">
                 <h2 class="card-title">Today</h2>
-                <p class="card-subtitle text-muted">{{stats.daily.amount or 0}} cal</p>
+                <p class="card-subtitle text-muted">{{daily_calories or 0}} cal</p>
             </div>
         </div>
     </div>
@@ -49,8 +49,9 @@
             <i class="align-middle d-md-inline-block d-none bi bi-trophy me-3" style="font-size: 2em"></i>
             <div class="align-middle d-inline-block">
                 <h2 class="card-title">Daily Goal</h2>
-                <p class="card-subtitle text-muted">{{stats.daily.amount or 0}}/{{goals.daily.amount or 0}} cal
-                    ({{(stats.daily.amount / goals.daily.amount) * 100 | round(2)}}%)</p>
+                <p class="card-subtitle text-muted">{{daily_calories}}/{{daily_goal}} cal
+                    ({{((daily_calories / daily_goal * 100) | round(2)) if daily_calories and
+                    daily_goal else 0}}%)</p>
             </div>
         </div>
     </div>

@@ -8,14 +8,14 @@
             <div class="h-100 d-flex align-content-center flex-column p-2">
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item dashboard-item">
-                        <a href="{{ url_for('main.dashboard')}}"
+                        <a href="{{ url_for('dashboard.overview')}}"
                            class="nav-link {{ 'active' if dashboard_page == 'overview' else 'text-dark'}}">
                             <i class="text-center bi bi-house d-block d-md-none"></i>
                             <span class="d-md-block d-none">Overview</span>
                         </a>
                     </li>
                     <li class="nav-item dashboard-item">
-                        <a href="{{ url_for('goals.index') }}"
+                        <a href="{{ url_for('dashboard.goals') }}"
                            class="nav-link {{ 'active' if dashboard_page == 'goals' else 'text-dark'}}">
                             <i class="text-center bi bi-plus-circle d-block d-md-none"></i>
                             <span class="d-md-block d-none">Goals</span></a>
