@@ -34,8 +34,8 @@
     {% endfor %}
     {% endwith %}
 </div>
-<div class="d-flex flex-row mx-4">
-    <div class="card shadow-sm">
+<div class="d-flex flex-row mx-4 flex-wrap">
+    <div class="card shadow-sm flex-fill flex-md-grow-0">
         <div class="card-body">
             <i class="align-middle d-md-inline-block d-none bi bi-speedometer me-3" style="font-size: 2em"></i>
             <div class="align-middle d-inline-block">
@@ -44,7 +44,7 @@
             </div>
         </div>
     </div>
-    <div class="card mx-4 shadow-sm">
+    <div class="card ms-md-4 shadow-sm flex-fill flex-md-grow-0">
         <div class="card-body">
             <i class="align-middle d-md-inline-block d-none bi bi-trophy me-3" style="font-size: 2em"></i>
             <div class="align-middle d-inline-block">
@@ -55,7 +55,6 @@
             </div>
         </div>
     </div>
-
 </div>
 <div class="m-4 shadow-sm">
     <form action="{{ url_for('items.create') }}" method="POST">

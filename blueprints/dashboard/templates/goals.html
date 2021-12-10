@@ -20,7 +20,7 @@
 </div>
 <div class="mx-4 mt-2 bg-white shadow-sm">
     <h2 class="m-2">Goals</h2>
-    <form class="m-2 w-50" action="{{ url_for('goals.create') }}" method="POST">
+    <form class="m-2" action="{{ url_for('goals.create') }}" method="POST">
         <input type="hidden" name="category" value="daily">
         <label for="amount">Daily</label>
         <div class="input-group">

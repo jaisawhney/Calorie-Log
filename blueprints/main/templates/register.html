@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="container-fluid bg-light h-100 d-flex justify-content-center align-items-center">
-    <div class="card w-50">
+    <div class="card w-50 flex-fill flex-sm-grow-0">
         <div class="card-body">
             {% with messages = get_flashed_messages(with_categories=true) %}
             {% for category, message in messages %}
