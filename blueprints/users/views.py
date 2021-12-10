@@ -1,4 +1,4 @@
-from flask import Blueprint, session, redirect, url_for, escape, request
+from flask import Blueprint, redirect, url_for, request, flash
 from database import *
 
 from bson.json_util import dumps
@@ -20,38 +20,30 @@ def show(user_id):
     return dumps(user)
 
 
-#@view.route("/<string:user_id>/edit", methods=["GET"])
-#def edit(user_id):
-#    return "Edit form"
-
-
-#@view.route("/", methods=["PUT"])
-#def update():
-#    return "Update one"
-
-
-#@view.route("/new", methods=["GET"])
-#def new():
-#    return "Create form"
-
-
 @view.route("/", methods=["POST"])
 def create():
-    first_name = escape(request.form.get("first_name"))
-    last_name = escape(request.form.get("last_name"))
-    email = escape(request.form.get("email"))
-
+    name = request.form.get("name")
+    email = request.form.get("email")
     password = request.form.get("password")
+
+    if not name or not email or not password:
+        flash("One or more required fields were missing!", "danger")
+        return redirect(url_for("main.register"))
+
+    existing_user = db_users.find_one({"email": email})
+    if existing_user:
+        flash("An account with that email already exists!", "danger")
+        return redirect(url_for("main.register"))
+
     password_hash = generate_password_hash(password)
 
     user = {
-        "first_name": first_name,
-        "last_name": last_name,
+        "name": name,
         "email": email,
         "password": password_hash
     }
     db_users.insert_one(user)
-    return "", 201
+    return redirect(url_for("main.login"))
 
 
 @view.route("/<string:user_id>", methods=["DELETE"])
