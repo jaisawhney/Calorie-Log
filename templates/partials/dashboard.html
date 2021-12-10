@@ -1,0 +1,38 @@
+{% extends "partials/base.html" %}
+{% set active_page = "dashboard" %}
+
+{% block content %}
+<div class="container-fluid p-0 h-100">
+    <div class="row h-100 w-100 m-0 p-0">
+        <div class="col-2 h-100 p-0">
+            <div class="h-100 d-flex align-content-center flex-column p-2">
+                <ul class="nav nav-pills flex-column mb-auto">
+                    <li class="nav-item dashboard-item">
+                        <a href="{{ url_for('main.dashboard')}}"
+                           class="nav-link {{ 'active' if dashboard_page == 'overview' else 'text-dark'}}">
+                            <i class="text-center bi bi-house d-block d-md-none"></i>
+                            <span class="d-md-block d-none">Overview</span>
+                        </a>
+                    </li>
+                    <li class="nav-item dashboard-item">
+                        <a href="{{ url_for('goals.index') }}"
+                           class="nav-link {{ 'active' if dashboard_page == 'goals' else 'text-dark'}}">
+                            <i class="text-center bi bi-plus-circle d-block d-md-none"></i>
+                            <span class="d-md-block d-none">Goals</span></a>
+                    </li>
+                </ul>
+                <hr>
+                <a href="{{ url_for('main.logout_user') }}" class="text-center text-dark text-decoration-none">
+                    <i class="d-inline-block bi bi-box-arrow-right"></i>
+                    <span class="d-md-inline-block d-none">Logout</span>
+                </a>
+            </div>
+        </div>
+        <div class="col-10 bg-light d-flex align d-flex flex-column p-0">
+            {% block dashboard_items %}
+
+            {% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}

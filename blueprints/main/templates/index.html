@@ -1,14 +1,30 @@
 {% extends "partials/base.html" %}
 {% set active_page = "index" %}
 
+{% block head %}
+<style>
+    .navbar {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+    }
+
+    .navbar-toggler {
+        border: none;
+    }
+
+</style>
+{% endblock %}
+
 {% block content %}
-<section class="fill">
+<section class="vh-100 hero">
     <div class="container-fluid h-100">
         <header class="h-100 d-flex align-items-center justify-content-center">
             <div class="text-center">
-                <h1 class="display-2">TBD</h1>
+                <h1 class="display-1 mb-0">TBD</h1>
                 <p class="lead">Site description</p>
-                <a href="/dashboard" class="btn btn-primary btn-md">Get Started</a>
+                <a href="/dashboard" class="btn btn-outline-dark btn-md mt-2 px-3">Get Started</a>
             </div>
         </header>
     </div>

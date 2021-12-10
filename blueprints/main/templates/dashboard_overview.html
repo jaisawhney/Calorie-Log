@@ -1,0 +1,112 @@
+{% extends "partials/dashboard.html" %}
+{% set active_page = "dashboard" %}
+{% set dashboard_page = "overview" %}
+
+{% block head %}
+<style>
+    .btn-custom-edit {
+        visibility: hidden;
+        position: absolute;
+
+        border: none;
+        color: black;
+        background: none;
+
+        top: 15px;
+        right: 10px;
+    }
+
+    .card-body:hover .btn-custom-edit {
+        visibility: visible;
+    }
+</style>
+{% endblock %}
+
+{% block dashboard_items %}
+<div class="mx-4 mt-4">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+
+    <div class="alert alert-{{ category }}" role="alert">
+        {{ message }}
+    </div>
+
+    {% endfor %}
+    {% endwith %}
+</div>
+<div class="d-flex flex-row mx-4">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <i class="align-middle d-md-inline-block d-none bi bi-speedometer me-3" style="font-size: 2em"></i>
+            <div class="align-middle d-inline-block">
+                <h2 class="card-title">Today</h2>
+                <p class="card-subtitle text-muted">{{stats.daily.amount or 0}} cal</p>
+            </div>
+        </div>
+    </div>
+    <div class="card mx-4 shadow-sm">
+        <div class="card-body">
+            <i class="align-middle d-md-inline-block d-none bi bi-trophy me-3" style="font-size: 2em"></i>
+            <div class="align-middle d-inline-block">
+                <h2 class="card-title">Daily Goal</h2>
+                <p class="card-subtitle text-muted">{{stats.daily.amount or 0}}/{{goals.daily.amount or 0}} cal
+                    ({{(stats.daily.amount / goals.daily.amount) * 100 | round(2)}}%)</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="m-4 shadow-sm">
+    <form action="{{ url_for('items.create') }}" method="POST">
+        <div class="input-group">
+            <input type="text" name="item_name" class="form-control d-block" placeholder="Name"
+                   required>
+            <input type="number" name="item_calories" class="form-control" placeholder="Calories" min="0"
+                   required>
+
+            <button class="btn btn-success" type="submit">Add</button>
+        </div>
+    </form>
+</div>
+<div class="row border bg-white mx-4 shadow-sm">
+    <div class="col-12 m-0 border-bottom p-2">
+        <h2 class="m-0 h4">Entries</h2>
+    </div>
+    {% for item in items %}
+    <div class="col-12 col-sm-4">
+        <div class="card my-4">
+            <div class="card-body">
+                <h3 class="card-title" style="font-size: 20px">{{item.name}}</h3>
+                <p class="card-subtitle">{{item.calories}} cal</p>
+                <small class="text-muted"><b>Logged on</b> {{ item.created_on.strftime("%m-%d-%Y")
+                    }}</small>
+                <button class="btn-custom-edit" data-id="{{item._id}}">
+                    <i class="bi bi-trash"></i></button>
+            </div>
+        </div>
+    </div>
+
+    {% else %}
+    <div class="col-12 py-3">
+        <p class="text-muted my-auto">No Items yet</p>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+    const deleteButtons = document.querySelectorAll(".btn-custom-edit");
+    deleteButtons.forEach(button => button.addEventListener('click', handleClick));
+
+    function handleClick(e) {
+        const target = e.currentTarget;
+        const item_id = target.dataset.id;
+        if (!item_id) return;
+
+        fetch(`/items/${item_id}`, {
+            method: "DELETE"
+        }).then(() => {
+            window.location.reload();
+        });
+    }
+</script>
+{% endblock %}
