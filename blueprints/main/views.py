@@ -1,8 +1,9 @@
 import datetime
 
-from flask import Blueprint, render_template, redirect, url_for, flash, session
+from flask import Blueprint, render_template, redirect, url_for, flash, session, request, flash
 from database import *
 from login import require_login
+from werkzeug.security import check_password_hash
 
 view = Blueprint("main", __name__, template_folder="templates")
 
@@ -17,15 +18,6 @@ def index():
 def dashboard():
     list_items = list(db_items.find({}, {}))
 
-    total_stats = list(db_items.aggregate([
-        {"$match": {}},
-        {"$group": {
-            "_id": None,
-            "amount": {"$sum": "$calories"}
-        }},
-        {"$limit": 1}
-    ]))
-
     daily_stats = list(db_items.aggregate([
         {"$match": {
             "created_on": {
@@ -38,18 +30,36 @@ def dashboard():
         {"$limit": 1}
     ]))
     stats = {
-        "total": total_stats[0] if len(total_stats) != 0 else 0,
         "daily": daily_stats[0] if len(daily_stats) != 0 else 0
     }
 
-    return render_template("dashboard.html", items=list_items, stats=stats)
+    return render_template("dashboard_overview.html", items=list_items, stats=stats, goals={"daily": {
+        "amount": 1000
+    }})
 
 
 @view.route("/login")
 def login():
     if session.get("email"):
         return redirect(url_for("main.dashboard"))
+
     return render_template("login.html")
+
+
+@view.route("/login", methods=["POST"])
+def login_user():
+    if session.get("email"):
+        return redirect(url_for("main.dashboard"))
+
+    user = db_users.find_one({"email": request.form.get("email")})
+    password = request.form.get("password")
+
+    if not user or not check_password_hash(user["password"], password):
+        flash("Incorrect login!", "danger")
+        return redirect(url_for("main.login"))
+
+    session["email"] = user.get("email", "danger")
+    return redirect(url_for("main.dashboard"))
 
 
 @view.route("/register")
@@ -59,4 +69,6 @@ def register():
 
 @view.route("/logout")
 def logout_user():
-    return redirect(url_for("main.index"))
+    session.pop("email", None)
+    flash("You are now logged out", "success")
+    return redirect(url_for("main.login"))

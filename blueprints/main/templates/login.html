@@ -1,17 +1,37 @@
 {% extends "partials/base.html" %}
-{% set active_page = "login" %}
+{% set active_page = "dashboard" %}
 
 {% block content %}
-<section>
-    <header>
-        <div>
-            <h1>TBD</h1>
-            <p>Site description</p>
-            <a href="#">Get Started</a>
-        </div>
-    </header>
-    <div>
+<div class="container-fluid bg-light h-100 d-flex justify-content-center align-items-center">
+    <div class="card w-50">
+        <div class="card-body">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
 
+            <div class="alert alert-{{ category }}" role="alert">
+                {{ message }}
+            </div>
+
+            {% endfor %}
+            {% endwith %}
+
+            <h1 class="card-title">Login</h1>
+            <form action="/login" method="POST">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" class="form-control" placeholder="Email" required>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-md btn-primary mt-2 py-1 w-100" type="submit">Sign in</button>
+                    <hr>
+                    <small>Or <a href="{{ url_for('main.register') }}">Sign Up</a></small>
+                </div>
+            </form>
+        </div>
     </div>
-</section>
+</div>
 {% endblock %}
