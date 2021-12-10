@@ -44,9 +44,3 @@ def create():
     }
     db_users.insert_one(user)
     return redirect(url_for("main.login"))
-
-
-@view.route("/<string:user_id>", methods=["DELETE"])
-def destroy(user_id):
-    db_users.delete_one({"_id": ObjectId(user_id)})
-    return "", 204

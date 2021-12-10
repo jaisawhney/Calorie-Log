@@ -33,8 +33,10 @@ def create():
     return redirect(url_for("dashboard.overview"))
 
 
-@view.route("/<string:user_id>", methods=["DELETE"])
+@view.route("/<string:item_id>", methods=["DELETE"])
 @require_login
-def destroy(user_id):
-    db_items.delete_one({"_id": ObjectId(user_id)})
+def destroy(item_id):
+    user = db_users.find_one({"email": session.get("email")})
+
+    db_items.delete_one({"_id": ObjectId(item_id), "user": user["_id"]})
     return "", 204
