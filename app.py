@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 
 from blueprints.main.views import view as routes_main
 from blueprints.goals.views import view as routes_goals
@@ -14,6 +14,12 @@ app.register_blueprint(routes_main)
 app.register_blueprint(routes_goals)
 app.register_blueprint(routes_users)
 app.register_blueprint(routes_items)
+
+
+@app.errorhandler(404)
+def page_not_found():
+    return render_template("404.html"), 404
+
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=os.environ.get("PORT", 5000))
