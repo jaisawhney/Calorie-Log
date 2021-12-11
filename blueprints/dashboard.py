@@ -4,10 +4,10 @@ from flask import Blueprint, render_template, session
 from database import *
 from login import require_login
 
-view = Blueprint("dashboard", __name__, template_folder="templates")
+routes_dashboard = Blueprint("dashboard", __name__, template_folder="../templates/dashboard")
 
 
-@view.route("/dashboard")
+@routes_dashboard.route("/dashboard")
 @require_login
 def overview():
     user = db_users.find_one({"email": session.get("email")})
@@ -32,7 +32,7 @@ def overview():
     return render_template("overview.html", items=list_items, daily_calories=daily_calories, daily_goal=daily_goal)
 
 
-@view.route("/dashboard/goals", methods=["GET"])
+@routes_dashboard.route("/dashboard/goals", methods=["GET"])
 @require_login
 def goals():
     user = db_users.find_one({"email": session.get("email")})

@@ -5,22 +5,22 @@ from bson.json_util import dumps
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash
 
-view = Blueprint("users", __name__, url_prefix="/users")
+routes_users = Blueprint("users", __name__, url_prefix="/users")
 
 
-@view.route("/", methods=["GET"])
+@routes_users.route("/", methods=["GET"])
 def index():
     users = db_users.find({}, {"password": 0})
     return dumps(users)
 
 
-@view.route("/<string:user_id>", methods=["GET"])
+@routes_users.route("/<string:user_id>", methods=["GET"])
 def show(user_id):
     user = db_users.find_one({"_id": ObjectId(user_id)}, {"password": 0})
     return dumps(user)
 
 
-@view.route("/", methods=["POST"])
+@routes_users.route("/", methods=["POST"])
 def create():
     name = request.form.get("name")
     email = request.form.get("email")

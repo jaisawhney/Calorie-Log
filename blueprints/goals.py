@@ -2,10 +2,10 @@ from flask import Blueprint, session, redirect, url_for, flash, request
 from database import *
 from login import require_login
 
-view = Blueprint("goals", __name__, url_prefix="/goals")
+routes_goals = Blueprint("goals", __name__, url_prefix="/goals")
 
 
-@view.route("/", methods=["POST"])
+@routes_goals.route("/", methods=["POST"])
 @require_login
 def create():
     user = db_users.find_one({"email": session.get("email")})

@@ -2,22 +2,22 @@ from flask import Blueprint, render_template, redirect, url_for, flash, session,
 from database import *
 from werkzeug.security import check_password_hash
 
-view = Blueprint("main", __name__, template_folder="templates")
+routes_main = Blueprint("main", __name__)
 
 
-@view.route("/")
+@routes_main.route("/")
 def index():
     return render_template("index.html")
 
 
-@view.route("/login")
+@routes_main.route("/login")
 def login():
     if session.get("email"):
         return redirect(url_for("dashboard.overview"))
     return render_template("login.html")
 
 
-@view.route("/login", methods=["POST"])
+@routes_main.route("/login", methods=["POST"])
 def login_user():
     if session.get("email"):
         return redirect(url_for("dashboard.overview"))
@@ -33,12 +33,12 @@ def login_user():
     return redirect(url_for("dashboard.overview"))
 
 
-@view.route("/register")
+@routes_main.route("/register")
 def register():
     return render_template("register.html")
 
 
-@view.route("/logout")
+@routes_main.route("/logout")
 def logout_user():
     session.pop("email", None)
     flash("You are now logged out", "success")

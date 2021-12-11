@@ -1,10 +1,10 @@
 from flask import Flask, render_template
 
-from blueprints.main.views import view as routes_main
-from blueprints.dashboard.views import view as routes_dashboard
-from blueprints.goals.views import view as routes_goals
-from blueprints.users.views import view as routes_users
-from blueprints.items.views import view as routes_items
+from blueprints.main import routes_main
+from blueprints.dashboard import routes_dashboard
+from blueprints.goals import routes_goals
+from blueprints.users import routes_users
+from blueprints.items import routes_items
 
 import os
 

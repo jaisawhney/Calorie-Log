@@ -5,10 +5,10 @@ from bson.objectid import ObjectId
 from datetime import datetime
 from login import require_login
 
-view = Blueprint("items", __name__, url_prefix="/items")
+routes_items = Blueprint("items", __name__, url_prefix="/items")
 
 
-@view.route("/", methods=["POST"])
+@routes_items.route("/", methods=["POST"])
 @require_login
 def create():
     user = db_users.find_one({"email": session.get("email")})
@@ -33,7 +33,7 @@ def create():
     return redirect(url_for("dashboard.overview"))
 
 
-@view.route("/<string:item_id>", methods=["DELETE"])
+@routes_items.route("/<string:item_id>", methods=["DELETE"])
 @require_login
 def destroy(item_id):
     user = db_users.find_one({"email": session.get("email")})
