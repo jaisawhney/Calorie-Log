@@ -1,0 +1,31 @@
+{% extends "partials/dashboard.html" %}
+{% set active_page = "dashboard" %}
+{% set dashboard_page = "goals" %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block dashboard_items %}
+<div class="mx-4 mb-0 mt-2">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+
+    <div class="alert alert-{{ category }}" role="alert">
+        {{ message }}
+    </div>
+
+    {% endfor %}
+    {% endwith %}
+</div>
+<div class="mx-4 p-2 shadow-sm border bg-white">
+    <h1 class="h3">Add a Goal</h1>
+    <form action="{{url_for('goals.create')}}" method="POST">
+        <div class="form-group">
+            <label for="goal">Goal</label>
+            <input type="text" class="form-control" id="goal" placeholder="Goal" name="goal_text" required>
+        </div>
+        <button type="submit" name="add_goal" class="mt-2 btn btn-sm btn-dark">Submit</button>
+    </form>
+</div>
+{% endblock %}

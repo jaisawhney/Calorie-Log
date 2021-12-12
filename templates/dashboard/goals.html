@@ -18,17 +18,60 @@
     {% endfor %}
     {% endwith %}
 </div>
-<div class="mx-4 mt-2 bg-white shadow-sm">
-    <h2 class="m-2">Goals</h2>
-    <form class="m-2" action="{{ url_for('goals.create') }}" method="POST">
-        <input type="hidden" name="category" value="daily">
+<div class="mx-4 mt-2 bg-white shadow-sm p-2">
+    <h1 class="h2">Goals</h1>
+    <form action="{{ url_for('goals.create') }}" method="POST">
         <label for="amount">Daily</label>
         <div class="input-group">
             <input type="number" name="amount" class="form-control" id="amount" placeholder="Amount"
-                   value="{{daily_goal.amount or 0}}" min=0>
-            <button class="btn btn-sm btn-success" type="submit">Update</button>
+                   value="{{daily_goal}}" min=0>
+            <button class="btn btn-sm btn-success" name="update_daily" type="submit">Update</button>
         </div>
     </form>
+    <h2 class="mt-4 h4">Health Goals</h2>
+    <a href="{{ url_for('goals.new') }}" class="text-dark">Add Goal</a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Goal</th>
+            <th scope="col">Options</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for (i, goal) in health_goals %}
+        <tr>
+            <th>{{ i + 1}}</th>
+            <td>{{ goal.goal }}</td>
+            <td>
+                <button type="button" class="btn-goal-delete bi bi-x-lg mx-2 text-danger"
+                        data-id="{{goal._id}}"
+                        style="font-size: 1em; border: none; background-color: transparent;"></button>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="3">No goals</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 </div>
 
+<script>
+    const deleteButtons = document.querySelectorAll(".btn-goal-delete");
+    deleteButtons.forEach(button => button.addEventListener("click", handleClick));
+
+    function handleClick(e) {
+        const target = e.currentTarget;
+        const item_id = target.dataset.id;
+        if (!item_id) return;
+
+        fetch(`/goals/${item_id}`, {
+            method: "DELETE"
+        }).then(() => {
+            window.location.reload();
+        });
+    }
+</script>
 {% endblock %}

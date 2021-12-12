@@ -25,8 +25,8 @@ def overview():
         "amount": {"$sum": "$calories"}
     }}, {"$limit": 1}]))
 
-    daily_goal = db_goals.find_one({"user": user["_id"], "category": "daily"}, {"amount": 1})
-    daily_goal = daily_goal["amount"] if daily_goal else 0
+    goals = db_goals.find_one({"user": user["_id"]})
+    daily_goal = goals["daily_goal"] if goals else 0
     daily_calories = daily_stats[0]["amount"] if len(daily_stats) != 0 else 0
 
     return render_template("overview.html", items=list_items, daily_calories=daily_calories, daily_goal=daily_goal)
@@ -37,6 +37,7 @@ def overview():
 def goals():
     user = db_users.find_one({"email": session.get("email")})
 
-    # Only one goal right now
-    daily_goal = db_goals.find_one({"user": user["_id"]})
-    return render_template("goals.html", daily_goal=daily_goal)
+    goals = db_goals.find_one({"user": user["_id"]})
+    health_goals = goals["health_goals"] if goals else []
+    daily_goal = goals["daily_goal"] if goals else 0
+    return render_template("goals.html", health_goals=enumerate(health_goals), daily_goal=daily_goal)

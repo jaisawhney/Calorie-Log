@@ -1,23 +1,20 @@
-from flask import Blueprint, redirect, url_for, request, flash
+from flask import Blueprint, redirect, url_for, request, flash, session
 from database import *
-
-from bson.json_util import dumps
-from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash
 
 routes_users = Blueprint("users", __name__, url_prefix="/users")
 
 
-@routes_users.route("/", methods=["GET"])
-def index():
-    users = db_users.find({}, {"password": 0})
-    return dumps(users)
+# @routes_users.route("/", methods=["GET"])
+# def index():
+#    users = db_users.find({}, {"password": 0})
+#    return dumps(users)
 
 
-@routes_users.route("/<string:user_id>", methods=["GET"])
-def show(user_id):
-    user = db_users.find_one({"_id": ObjectId(user_id)}, {"password": 0})
-    return dumps(user)
+# @routes_users.route("/<string:user_id>", methods=["GET"])
+# def show(user_id):
+#    user = db_users.find_one({"_id": ObjectId(user_id)}, {"password": 0})
+#    return dumps(user)
 
 
 @routes_users.route("/", methods=["POST"])
